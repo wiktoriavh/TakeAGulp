@@ -1,0 +1,17 @@
+body {
+  width: 220px;
+}
+
+table {
+  width: 100%;
+}
+
+table th {
+  width: 50%;
+  background: black;
+  color: white;
+}
+
+table td {
+  text-align: center;
+}

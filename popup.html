@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take A Gulp</title>
+    <link rel="stylesheet" href="popup.css" />
+    <script type="module" src="popup.js" defer></script>
+  </head>
+  <body>
+    <h1>Take A Gulp</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Gulps Needed</th>
+          <th>Time Left</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="gulps-needed">0</td>
+          <td id="time-left">0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button id="refresh">Refresh</button>
+    <form>
+      <fieldset>
+        <legend>Water</legend>
+        <label>
+          Your Gulp in ml
+          <input id="gulp" type="number" placeholder="20" />
+        </label>
+        <label>
+          Your Goal in ml
+          <input id="goal" type="number" placeholder="1500" />
+        </label>
+        <label>
+          How much you already drank in ml
+          <input id="drank" type="number" placeholder="350" />
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Time</legend>
+        <!-- <label>
+          When do you wake up?
+          <input id="start" type="time" />
+        </label> 
+      ? ich brauche das wohl nicht, da ich die Zeit zwischen
+      ? JETZT und END ausrechnen werden 
+      -->
+        <label>
+          When do you go to sleep?
+          <input id="end" type="time" />
+        </label>
+      </fieldset>
+    </form>
+  </body>
+</html>

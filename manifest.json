@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Take a Gulp",
+  "version": "1.0.0",
+  "description": "Get reminded by the app to take a gulp of water to stay hydrated!",
+  "author": "Wiktoria Mielcarek",
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": ["storage", "tabs", "alarms"],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Hey, what's up?"
+  },
+  "icons": {
+    "32": "./assets/images/32_icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": ["assets/sounds/water-gulp.wav"]
+}
