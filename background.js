@@ -13,6 +13,10 @@
 let lastTabId = 0;
 let congratulations = false;
 
+/**
+ * Send a Message with the given Argument
+ * @param   {object}       storage        The Object to be sent
+ */
 function sendMessage(storage) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     console.log(tabs[0].id);
@@ -27,6 +31,10 @@ function sendMessage(storage) {
   });
 }
 
+/**
+ * Create an interval Alarm
+ * @param   {number}       period            The timeframe between each alarm in minutes
+ */
 function createPeriodAlarm(period) {
   chrome.alarms.create("TakeAGulp", {
     periodInMinutes: period,
