@@ -6,6 +6,7 @@ let congrats = false;
 
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
+    console.log(msg);
     if (msg.reset === true) {
       congrats = false;
     } else {
