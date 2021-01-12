@@ -133,10 +133,6 @@ function gulpsToDo() {
   const time_left = timeLeft();
   const timeBetweenGulps = time_left.dec / amount;
   const minBetweenGulps = decimalToTime(timeBetweenGulps);
-  const milliBetweenGulps =
-    minBetweenGulps[0] * 60 * 60 * 1000 +
-    minBetweenGulps[1] * 60 * 1000 +
-    minBetweenGulps[2] * 1000;
 
   const strTimeLeft = time_left.arr[0] + "h " + time_left.arr[1] + "min";
   elTimeLeft.innerHTML = strTimeLeft;
@@ -148,8 +144,3 @@ function gulpsToDo() {
 }
 
 gulpsToDo();
-
-const elRefresh = document.getElementById("refresh");
-elRefresh.addEventListener("click", () => {
-  gulpsToDo();
-});
