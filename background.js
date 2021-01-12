@@ -43,12 +43,13 @@ function createPeriodAlarm(period) {
   console.log("create alarm of " + period + " minutes");
 
   chrome.alarms.onAlarm.addListener((alarm) => {
-    console.log("ALARM!");
     if (alarm.name === "TakeAGulp") {
       chrome.storage.sync.get(["gulp", "drank"], (obj) => {
         let storage;
         storage = obj;
-        sendMessage(storage);
+        if (obj.drank < obj.goal) {
+          sendMessage(storage);
+        }
       });
     }
   });
