@@ -4,7 +4,7 @@
  *
  * @author        Wiktoria Mielcarek <w.mielcarek@braweria.de>
  * @link          https://braweria.de/
- * @version       0.9.0-Beta
+ * @version       Beta
  * @copyright     2021 Wiktoria (Braweria) Mielcarek
  * @license       GNU GPLv3
  * @repository    https://github.com/Braweria/TakeAGulp
