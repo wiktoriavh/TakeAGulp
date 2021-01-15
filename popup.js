@@ -75,7 +75,7 @@ function decimalToTime(decimal) {
   if (!Number.isInteger(min)) {
     const minNums = min.toString().split(/\./);
     min = Number(minNums[0]);
-    minDec = Number("0." + minNums[1]);
+    let minDec = Number("0." + minNums[1]);
     sec = parseInt(minDec * 60);
   }
 
@@ -122,25 +122,14 @@ function timeLeft() {
   };
 }
 
-const elGulpsNeeded = document.getElementById("gulps-needed");
-const elTimeLeft = document.getElementById("time-left");
+const gulp = Number(elGulp.value);
+const goal = Number(elGoal.value);
+const drank = Number(elDrank.value);
+const amount = (goal - drank) / gulp;
+const time_left = timeLeft();
+const timeBetweenGulps = time_left.dec / amount;
+const minBetweenGulps = decimalToTime(timeBetweenGulps);
 
-function gulpsToDo() {
-  const gulp = Number(elGulp.value);
-  const goal = Number(elGoal.value);
-  const drank = Number(elDrank.value);
-  const amount = (goal - drank) / gulp;
-  const time_left = timeLeft();
-  const timeBetweenGulps = time_left.dec / amount;
-  const minBetweenGulps = decimalToTime(timeBetweenGulps);
-
-  const strTimeLeft = time_left.arr[0] + "h " + time_left.arr[1] + "min";
-  elTimeLeft.innerHTML = strTimeLeft;
-  elGulpsNeeded.innerHTML = amount;
-
-  chrome.storage.sync.set({ amount: minBetweenGulps[1] }, () => {
-    console.log("Amount has been set as: " + minBetweenGulps[1]);
-  });
-}
-
-gulpsToDo();
+chrome.storage.sync.set({ amount: minBetweenGulps[1] }, () => {
+  console.log("Amount has been set as: " + minBetweenGulps[1]);
+});
