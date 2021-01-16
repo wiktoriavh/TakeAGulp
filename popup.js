@@ -27,19 +27,10 @@ elDrank.addEventListener("change", () => {
   });
 });
 
-chrome.storage.sync.get("gulp", (obj) => {
+chrome.storage.sync.get(["gulp", "goal", "end", "drank"], (obj) => {
   elGulp.value = Number(obj.gulp);
-});
-
-chrome.storage.sync.get("goal", (obj) => {
   elGoal.value = Number(obj.goal);
-});
-
-chrome.storage.sync.get("end", (obj) => {
   elEnd.value = obj.end;
-});
-
-chrome.storage.sync.get("drank", (obj) => {
   elDrank.value = obj.drank;
 });
 
