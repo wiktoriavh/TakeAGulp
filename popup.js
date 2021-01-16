@@ -27,11 +27,14 @@ elDrank.addEventListener("change", () => {
   });
 });
 
+/**
+ * Get information from the storage to set them in the inputs
+ */
 chrome.storage.sync.get(["gulp", "goal", "end", "drank"], (obj) => {
-  elGulp.value = Number(obj.gulp);
-  elGoal.value = Number(obj.goal);
   elEnd.value = obj.end;
   elDrank.value = obj.drank;
+  elGulp.value = Number(obj.gulp);
+  elGoal.value = Number(obj.goal);
 });
 
 /**
