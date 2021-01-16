@@ -16,7 +16,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendRes) => {
       chrome.storage.sync.set({ drank: newDrank });
 
       if (newDrank >= obj.goal && congrats === false) {
-        console.log("hooray");
         alert(
           `Congratulations! You reached your goal of drinking ${obj.goal} ml!`
         );
