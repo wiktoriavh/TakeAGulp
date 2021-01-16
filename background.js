@@ -17,17 +17,31 @@ let congratulations = false;
  * Send a Message with the given Argument
  * @param   {object}       storage        The Object to be sent
  */
-function sendMessage(storage) {
+// function sendMessage(storage) {
+//   console.log("sending message.");
+
+//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+//     console.log(tabs[0].id);
+//     console.log(tabs[0].title);
+//     tabs[0].id === undefined
+//       ? (lastTabId = lastTabId)
+//       : (lastTabId = tabs[0].id);
+
+//     const port = chrome.tabs.connect(lastTabId);
+
+//     port.postMessage(storage);
+//   });
+// }
+
+function post() {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    console.log(tabs[0].id);
-    console.log(tabs[0].title);
-    tabs[0].id === undefined
-      ? (lastTabId = lastTabId)
-      : (lastTabId = tabs[0].id);
-
-    const port = chrome.tabs.connect(lastTabId);
-
-    port.postMessage(storage);
+    chrome.tabs.sendMessage(tabs[0].id, { message: "gulp" }, (res) => {
+      if (res) {
+        console.log(res);
+      } else {
+        console.error(chrome.runtime.lastError.message);
+      }
+    });
   });
 }
 
@@ -40,25 +54,27 @@ function createPeriodAlarm(period) {
     periodInMinutes: period,
   });
 
-  console.log("create alarm of " + period + " minutes");
+  console.log("create alarm of " + period + " minute(s)");
 
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === "TakeAGulp") {
-      chrome.storage.sync.get(["gulp", "drank"], (obj) => {
-        let storage;
-        storage = obj;
-        if (obj.drank < obj.goal) {
-          sendMessage(storage);
-        }
-      });
+      post();
+      // chrome.storage.sync.get(["gulp", "drank"], (obj) => {
+      //   let storage;
+      //   storage = obj;
+      //   if (obj.drank < obj.goal) {
+      //     sendMessage(storage);
+      //   }
+      // });
     }
   });
 }
 
-chrome.storage.sync.get("amount", (obj) => {
-  createPeriodAlarm(obj.amount);
-});
+// chrome.storage.sync.get("amount", (obj) => {
+//   createPeriodAlarm(obj.amount);
+// });
 
+createPeriodAlarm(1);
 /**
  * Calculates the time into decimals
  * @param   {string}  time  Must be a String: "15:32"
@@ -144,12 +160,13 @@ function checkIfEndTime(start, ending) {
     });
   }
 
-  chrome.alarms.onAlarm.addListener((alarm) => {
-    if (alarm.name === "endReached") {
-      chrome.storage.sync.set({ drank: 0 }, () => {
-        sendMessage({ reset: true });
-        console.log("Drank has been reset to 0.");
-      });
-    }
-  });
+  //   chrome.alarms.onAlarm.addListener((alarm) => {
+  //     if (alarm.name === "endReached") {
+  //       chrome.storage.sync.set({ drank: 0 }, (obj) => {
+  //         // sendMessage({ reset: true });
+
+  //         console.log("Drank has been reset to 0.");
+  //       });
+  //     }
+  //   });
 }
