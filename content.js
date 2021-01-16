@@ -2,33 +2,37 @@
  * @audio_copyright     https://freesound.org/people/Q.K./sounds/56271/
  */
 
+const url = chrome.runtime.getURL("assets/sounds/water-gulp.wav");
+const gulpAudio = new Audio(url);
 let congrats = false;
 
-chrome.runtime.onConnect.addListener((port) => {
-  port.onMessage.addListener((msg) => {
-    console.log(msg);
-    if (msg.reset === true) {
-      congrats = false;
-    } else {
-      const url = chrome.runtime.getURL("assets/sounds/water-gulp.wav");
-      const gulpAudio = new Audio(url);
-      gulpAudio.play();
-      console.log(msg);
-      let gulp = Number(msg.gulp);
-      let drank = Number(msg.drank);
-      drank += gulp;
+chrome.runtime.onMessage.addListener((msg, sender, sendRes) => {
+  const message = msg.message;
 
-      chrome.storage.sync.set({ drank: drank, gulp: gulp });
+  if (message === "gulp") {
+    chrome.storage.sync.get(["drank", "gulp", "goal"], (obj) => {
+      const newDrank = obj.drank + obj.gulp;
 
-      chrome.storage.sync.get(["drank", "goal"], (obj) => {
-        const goal = obj.goal;
-        const drank = obj.drank;
+      chrome.storage.sync.set({ drank: newDrank });
 
-        if (drank >= goal && congrats === false) {
-          congrats = true;
-          alert("Congratulations! You reached your goal!");
-        }
-      });
-    }
-  });
+      if (newDrank >= obj.goal && congrats === false) {
+        console.log("hooray");
+        alert(
+          `Congratulations! You reached your goal of drinking ${obj.goal} ml!`
+        );
+        congrats = true;
+      } else if (newDrank < obj.goal) {
+        playSound();
+      }
+    });
+  }
 });
+
+async function playSound() {
+  try {
+    await gulpAudio.play();
+  } catch (err) {
+    console.error(err);
+    console.log("not playing any sound...");
+  }
+}
