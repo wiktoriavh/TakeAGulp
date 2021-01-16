@@ -15,23 +15,8 @@ let congratulations = false;
 
 /**
  * Send a Message with the given Argument
- * @param   {object}       storage        The Object to be sent
+ * @param   {object}  storage   The Object to be sent
  */
-// function sendMessage(storage) {
-//   console.log("sending message.");
-
-//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//     console.log(tabs[0].id);
-//     console.log(tabs[0].title);
-//     tabs[0].id === undefined
-//       ? (lastTabId = lastTabId)
-//       : (lastTabId = tabs[0].id);
-
-//     const port = chrome.tabs.connect(lastTabId);
-
-//     port.postMessage(storage);
-//   });
-// }
 
 function post() {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -47,7 +32,7 @@ function post() {
 
 /**
  * Create an interval Alarm
- * @param   {number}       period            The timeframe between each alarm in minutes
+ * @param   {number}  period    The timeframe between each alarm in minutes
  */
 function createPeriodAlarm(period) {
   chrome.alarms.create("TakeAGulp", {
@@ -59,13 +44,6 @@ function createPeriodAlarm(period) {
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === "TakeAGulp") {
       post();
-      // chrome.storage.sync.get(["gulp", "drank"], (obj) => {
-      //   let storage;
-      //   storage = obj;
-      //   if (obj.drank < obj.goal) {
-      //     sendMessage(storage);
-      //   }
-      // });
     }
   });
 }
@@ -75,10 +53,11 @@ function createPeriodAlarm(period) {
 // });
 
 createPeriodAlarm(1);
+
 /**
  * Calculates the time into decimals
- * @param   {string}  time  Must be a String: "15:32"
- * @return  {number}        Returns Time as a decimal
+ * @param   {string}  time    Must be a String: "15:32"
+ * @return  {number}          Returns Time as a decimal
  */
 function timeToDecimal(time) {
   const regexTime = /(\d+):(\d+)/g;
@@ -159,14 +138,4 @@ function checkIfEndTime(start, ending) {
       when: ending,
     });
   }
-
-  //   chrome.alarms.onAlarm.addListener((alarm) => {
-  //     if (alarm.name === "endReached") {
-  //       chrome.storage.sync.set({ drank: 0 }, (obj) => {
-  //         // sendMessage({ reset: true });
-
-  //         console.log("Drank has been reset to 0.");
-  //       });
-  //     }
-  //   });
 }
