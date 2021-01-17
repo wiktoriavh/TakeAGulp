@@ -6,6 +6,7 @@ const elDrank = document.getElementById("drank");
 elEnd.addEventListener("change", () => {
   chrome.storage.sync.set({ end: elEnd.value }, () => {
     console.log("Time has been set as: " + elEnd.value);
+    getAndSetInfo();
   });
 });
 
@@ -32,42 +33,46 @@ elDrank.addEventListener("change", () => {
  * and calculate time between gulps as well as
  * set the date when you reset the drank value
  */
-chrome.storage.sync.get(["gulp", "goal", "end", "drank"], (obj) => {
-  elEnd.value = obj.end;
-  elDrank.value = obj.drank;
-  elGulp.value = Number(obj.gulp);
-  elGoal.value = Number(obj.goal);
+function getAndSetInfo() {
+  chrome.storage.sync.get(["gulp", "goal", "end", "drank"], (obj) => {
+    elEnd.value = obj.end;
+    elDrank.value = obj.drank;
+    elGulp.value = Number(obj.gulp);
+    elGoal.value = Number(obj.goal);
 
-  const gulp = obj.gulp;
-  const goal = obj.goal;
-  const drank = obj.drank;
-  const end = obj.end.split(":");
+    const gulp = obj.gulp;
+    const goal = obj.goal;
+    const drank = obj.drank;
+    const end = obj.end.split(":");
 
-  const amount = (goal - drank) / gulp;
-  const time_left = timeLeft();
-  const timeBetweenGulps = time_left.dec / amount;
-  const minBetweenGulps = decimalToTime(timeBetweenGulps);
+    const amount = (goal - drank) / gulp;
+    const time_left = timeLeft();
+    const timeBetweenGulps = time_left.dec / amount;
+    const minBetweenGulps = decimalToTime(timeBetweenGulps);
 
-  const now = new Date();
-  const resetAt = new Date();
-  resetAt.setHours(end[0]);
-  resetAt.setMinutes(end[1]);
-  resetAt.setSeconds(0);
+    const now = new Date();
+    const resetAt = new Date();
+    resetAt.setHours(end[0]);
+    resetAt.setMinutes(end[1]);
+    resetAt.setSeconds(0);
 
-  if (resetAt < now) {
-    resetAt.setDate(resetAt.getDate() + 1);
-  }
-
-  chrome.storage.sync.set(
-    {
-      amount: minBetweenGulps[1],
-      resetAt: resetAt,
-    },
-    () => {
-      console.log("Amount has been set as: " + minBetweenGulps[1]);
+    if (resetAt < now) {
+      resetAt.setDate(resetAt.getDate() + 1);
     }
-  );
-});
+
+    chrome.storage.sync.set(
+      {
+        amount: minBetweenGulps[1],
+        reset: resetAt.toISOString(),
+      },
+      () => {
+        console.log("Amount has been set as: " + minBetweenGulps[1]);
+      }
+    );
+  });
+}
+
+getAndSetInfo();
 
 /**
  * Calculates the time into decimals
