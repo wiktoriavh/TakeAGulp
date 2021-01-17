@@ -140,26 +140,24 @@ function checkIfEndTime(start, ending) {
   }
 }
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  if ("reset" in changes) {
-    const reset = changes.reset.newValue;
-    console.log(reset);
-    checkResetTimer(reset);
-  }
-});
-
-chrome.storage.sync.get(["reset", "amount"], (obj) => {
-  const reset = obj.reset;
-  console.log(reset);
-  checkResetTimer(reset);
-});
-
 function checkResetTimer(isoTime) {
   const resetDate = new Date(isoTime);
   const now = new Date();
   if (resetDate <= now) {
-    chrome.storage.sync.set({ drank: 0 }, () => {
-      console.log("drank has been set.");
-    });
+    resetDate.setDate(resetDate.getDate() + 1);
+    chrome.storage.sync.set(
+      { drank: 0, reset: resetDate.toISOString() },
+      () => {
+        console.log("drank has been set.");
+      }
+    );
   }
 }
+
+const resetInterval = setInterval(() => {
+  chrome.storage.sync.get(["reset", "amount"], (obj) => {
+    const reset = obj.reset;
+    console.log(reset);
+    checkResetTimer(reset);
+  });
+}, 1000 * 60);
