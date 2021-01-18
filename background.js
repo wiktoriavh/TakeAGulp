@@ -48,11 +48,11 @@ function createPeriodAlarm(period) {
   });
 }
 
-// chrome.storage.sync.get("amount", (obj) => {
-//   createPeriodAlarm(obj.amount);
-// });
+chrome.storage.sync.get("amount", (obj) => {
+  createPeriodAlarm(obj.amount);
+});
 
-createPeriodAlarm(1);
+// createPeriodAlarm(1);
 
 /**
  * Calculates the time into decimals
