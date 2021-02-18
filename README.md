@@ -20,4 +20,4 @@ You can find the extension with the following Icon at the moment.
 
 ---
 
-The extension is still in production and being tested, if everything is working right. Right now the extension's popup only has generic HTML, the UI will be updated for version 1.0.0.
+The extension is still under development and being tested, if everything is working right. Right now the extension's popup only has generic HTML, the UI will be updated for version 1.0.0.
